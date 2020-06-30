@@ -9,7 +9,15 @@ def check_and_set(lower, value, upper):
 
 
 class User:
-    pass
+    def __init__(self, name: str, email: str, passwd: str, score: int, down: int):
+        self.name = name
+        self.email = email
+        self.passwd = passwd
+        self.score = score
+        self.down = down
+
+    def __eq__(self, other):
+        return self.__dict__.values() == other.__dict__.values()
 
 
 class Address:
@@ -118,7 +126,3 @@ class UserParameters:
 
     def closing_costs(self):
         return self._closing
-
-
-class Estimation:
-    pass
