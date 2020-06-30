@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<!--script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk&libraries=places&callback=initAutocomplete" async defer></script-->
+<!--script src="..\static\script\autocomplete.js" async defer></script-->
+
+<div class="w3-row-padding w3-padding-32 w3-center" id="calculator">
+    <form method="post">
+        <div class="w3-half">
+            <div class="w3-card-4 w3-margin">
+
+                <h3 class="w3-left w3-margin">Property:</h3>
+                <!--label for="price">Address:</label-->
+                <input class="w3-input"
+                       type="text"
+                       id="address" name="Address"
+                       onFocus="geolocate()"
+                       placeholder="Address">
+            </div>
+
+            <div class="w3-card-4 w3-margin">
+                <h3 class="w3-left w3-margin">Initial expenses:</h3>
+
+                <!--label for="price">House Price:</label-->
+                <input class="w3-input"
+                       required
+                       type="number" min="0" step="0.01"
+                       id="price" name="price"
+                       value="{{ request.form['price'] }}"
+                       placeholder="House Price">
+
+                <!--label for="value">Market Value:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="value" name="value"
+                       value="{{ request.form['value'] }}"
+                       placeholder="Market Value">
+
+                <!--label for="rehab">Rehab Cost:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="rehab" name="rehab"
+                       value="{{ request.form['rehab'] }}"
+                       placeholder="Rehab Cost">
+
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="closing_cost" name="closing_cost"
+                       value="{{ request.form['closing_cost'] }}"
+                       placeholder="Closing Costs">
+
+            </div>
+
+            <div class="w3-card-4 w3-margin">
+                <h3 class="w3-left w3-margin">Loan terms:</h3>
+
+                <!--label for="term">Term:</label-->
+                <input class="w3-input"
+                       required type="number" min="0"
+                       id="term" name="term"
+                       value="{{ request.form['term'] }}"
+                       placeholder="Term">
+
+                <!--label for="rate">Rate:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="rate" name="rate"
+                       value="{{ request.form['rate'] }}"
+                       placeholder="Rate">
+
+                <!--label for="down">Down payment:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="down" name="down"
+                       value="{{ request.form['down'] }}"
+                       placeholder="Down payment">
+            </div>
+        </div>
+        <div class="w3-half">
+            <div class="w3-card-4 w3-margin">
+                <h3 class="w3-left w3-margin">Monthly expenses:</h3>
+
+                <!--label for="taxes">Taxes:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="taxes" name="taxes"
+                       value="{{ request.form['taxes'] }}"
+                       placeholder="Taxes">
+
+                <!--label for="insurance">Insurance:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="insurance" name="insurance"
+                       value="{{ request.form['insurance'] }}"
+                       placeholder="Insurance">
+
+                <!--label for="maintenance">Maintenance:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="maintenance" name="maintenance"
+                       value="{{ request.form['maintenance'] }}"
+                       placeholder="Maintenance">
+
+                <!--label for="hoa">HOA:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="hoa" name="hoa"
+                       value="{{ request.form['hoa'] }}"
+                       placeholder="HOA">
+
+                <!--label for="management">Management:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="management" name="management"
+                       value="{{ request.form['management'] }}"
+                       placeholder="Management">
+            </div>
+
+            <div class="w3-card-4 w3-margin">
+                <h3 class="w3-left w3-margin">Monthly income:</h3>
+
+                <!--label for="rent">House Rent:</label-->
+                <input class="w3-input"
+                       required type="number" min="0" step="0.01"
+                       id="rent" name="rent"
+                       value="{{ request.form['rent'] }}"
+                       placeholder="House Rent">
+            </div>
+            {% if house_details is not none %}
+            <div class="w3-card-4 w3-margin">
+                <h3 class="w3-left w3-margin">Deal estimate:</h3>
+                <hr>
+                <table>
+                    <tr>
+                        <td>Cash Flow:</td>
+                        <td>{{"$%.2f"|format(analysis.get_cash_flow())}}</td>
+                        <td>{{"%.2f"|format(analysis.get_apy())}}</td>
+                    </tr>
+                    <tr>
+                        <td>Deal:</td>
+                        <td>{{"$%.2f"|format(analysis.get_cash_deal())}}</td>
+                        <td>{{"%.2f"|format(analysis.get_cash_deal())}}</td>
+                    </tr>
+                    <tr>
+                        <td>Expenses:</td>
+                        <td>{{"$%.2f"|format(expenses)}}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endif %}
+
+        </div>
+        <div class="w3-col">
+            <button class="w3-button w3-black w3-section" type="submit">
+                <i class="fa fa-paper-plane"></i> CALCULATE
+            </button>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

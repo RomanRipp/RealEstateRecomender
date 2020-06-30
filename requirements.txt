@@ -1,2 +1,4 @@
 numpy==1.18
 numpy_financial
+flask
+flask_mail
