@@ -1,3 +1,5 @@
+import os
+import hashlib
 import numpy as np
 import numpy_financial as npf
 
@@ -8,16 +10,23 @@ def check_and_set(lower, value, upper):
     return value
 
 
+def _hash(data: str):
+    salt = os.urandom(32)
+    key = hashlib.pbkdf2_hmac('sha256', data.encode('utf-8'), salt, 100000)
+    storage = (key + salt)
+    return storage
+
+
 class User:
-    def __init__(self, name: str, email: str, passwd: str, score: int, down: int):
+    def __init__(self, name: str, email: str, score: int, down: int):
         self.name = name
         self.email = email
-        self.passwd = passwd
+        self.passwd = b''
         self.score = score
         self.down = down
 
-    def __eq__(self, other):
-        return self.__dict__.values() == other.__dict__.values()
+    def set_password(self, raw_pass: str):
+        self.passwd = _hash(raw_pass)
 
 
 class Address:
