@@ -10,10 +10,12 @@ def check_and_set(lower, value, upper):
     return value
 
 
-def _hash(data: str):
-    salt = os.urandom(32)
+SALT_SIZE = 32
+
+
+def _hash(data: str, salt: bytes):
     key = hashlib.pbkdf2_hmac('sha256', data.encode('utf-8'), salt, 100000)
-    storage = (key + salt)
+    storage = salt + key
     return storage
 
 
@@ -26,7 +28,12 @@ class User:
         self.down = down
 
     def set_password(self, raw_pass: str):
-        self.passwd = _hash(raw_pass)
+        self.passwd = _hash(raw_pass, os.urandom(SALT_SIZE))
+
+    def verify_password(self, other_passwd):
+        salt = self.passwd[:SALT_SIZE]
+        other_key = _hash(other_passwd, salt)
+        return self.passwd[SALT_SIZE:] == other_key[SALT_SIZE:]
 
 
 class Address:

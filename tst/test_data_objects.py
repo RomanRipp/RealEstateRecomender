@@ -15,3 +15,10 @@ class TestLoan(TestCase):
         loan = do.Loan(4.75, 15)
         self.assertAlmostEqual(1866.80, loan.calculate_payment(240000), 2)
 
+    def test_verify_password(self):
+        user = do.User('', '', 0, 0)
+        user.set_password('qwer')
+        self.assertTrue(user.verify_password('qwer'))
+        self.assertFalse(user.verify_password('qwar'))
+
+
